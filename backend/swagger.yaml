@@ -4,10 +4,10 @@ info:
   title: Data view pro API
   version: 1.0
   description: This is the API documentation for the Data view pro application
-  
+
 paths:
   ### Health check endpoint
-  /api/health/:
+  /api/health:
     get:
       summary: Health check
       tags:
@@ -24,3 +24,210 @@ paths:
                   status:
                     type: string
                     example: OK
+
+  /api/public/auth/login:
+    post:
+      summary: Login
+      tags: 
+        - Auth
+      requestBody:
+        description: User login details
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                email:
+                  type: string
+                  example: "johndoe@example.com"
+                password:
+                  type: string
+                  format: password
+                  example: "password123"
+      responses:
+        '200':
+          description: Login successful
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: "Login Success"
+                  status:
+                    type: boolean
+                    example: true
+                  data:
+                    type: object
+                    properties:
+                      id:
+                        type: string
+                        example: "uuid123"
+                      username:
+                        type: string
+                        example: "johndoe"
+                      email:
+                        type: string
+                        example: "johndoe@example.com"
+                      createdAt:
+                        type: string
+                        format: date-time
+                        example: "2024-06-07T12:00:00Z"
+                      image:
+                        type: string
+                        example: "your_image_url_here"
+                      token:
+                        type: string
+                        example: "your_jwt_token_here"
+        '404':
+          description: User not found
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: "User Not Found"
+                  status:
+                    type: boolean
+                    example: false
+                  data:
+                    type: object
+                    properties:
+                      userNotFound:
+                        type: boolean
+                        example: true
+        '401':
+          description: Wrong credentials
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: "Wrong credentials"
+                  status:
+                    type: boolean
+                    example: false
+                  data:
+                    type: object
+                    properties:
+                      wrongCred:
+                        type: boolean
+                        example: true
+        '500':
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: "Internal Server Error"
+                  status:
+                    type: boolean
+                    example: false
+                  data:
+                    type: object
+                    nullable: true
+
+  /api/public/auth/register:
+    post:
+      summary: Register a new user
+      tags:
+        - Auth
+      requestBody:
+        description: User registration details
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                username:
+                  type: string
+                  example: "johndoe"
+                email:
+                  type: string
+                  format: email
+                  example: "johndoe@example.com"
+                password:
+                  type: string
+                  format: password
+                  example: "password123"
+                recall:
+                  type: boolean
+                  example: true
+      responses:
+        '201':
+          description: Created new user successfully
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: "Created new user successfully"
+                  status:
+                    type: boolean
+                    example: true
+                  data:
+                    type: object
+                    properties:
+                      id:
+                        type: string
+                        example: "uuid123"
+                      username:
+                        type: string
+                        example: "johndoe"
+                      email:
+                        type: string
+                        example: "johndoe@example.com"
+                      createdAt:
+                        type: string
+                        format: date-time
+                        example: "2024-06-07T12:00:00Z"
+                      image:
+                        type: string
+                        example: "your_image_url_here"
+                      token:
+                        type: string
+                        example: "your_jwt_token_here"
+        '409':
+          description: User Already Exist
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: "User Already Exist"
+                  status:
+                    type: boolean
+                    example: false
+                  data:
+                    type: object
+                    nullable: true
+        '500':
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: "Internal Server Error"
+                  status:
+                    type: boolean
+                    example: false
+                  data:
+                    type: object
+                    nullable: true
