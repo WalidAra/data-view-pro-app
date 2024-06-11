@@ -4,6 +4,7 @@ const destructUser = require("../../scripts/destructUser");
 const createToken = require("../../helpers/token");
 const { Error500 } = require("../../constants");
 const saltOrRounds = 10;
+require("dotenv").config();
 
 const Auth = {
   Login: async (req, res) => {
