@@ -1,4 +1,4 @@
-import { createContext, useEffect, useState } from "react";
+import React, { createContext, useEffect, useState } from "react";
 
 type Props = {
   token: string | null;
@@ -10,22 +10,21 @@ export const Auth = createContext<Props>({
   setToken: () => null,
 });
 
-import React from "react";
-
 const AuthProvider = ({ children }: { children: React.ReactNode }) => {
-  const [token, setToken] = useState<string | null>(null);
+  const [token, setToken] = useState<string | null>(() => {
+    const storedToken = localStorage.getItem("dvp-auth");
+    return storedToken || null;
+  });
 
   useEffect(() => {
-    const accessToken = localStorage.getItem("dvp-auth");
-
-    if (accessToken) {
-      setToken(accessToken);
+    const storedToken = localStorage.getItem("dvp-auth");
+    if (storedToken) {
+      setToken(storedToken);
     }
-  }, []);
+  }, []); 
+  
 
-  return (
-    <Auth.Provider value={{ token, setToken }}> {children} </Auth.Provider>
-  );
+  return <Auth.Provider value={{ token, setToken }}>{children}</Auth.Provider>;
 };
 
 export default AuthProvider;
