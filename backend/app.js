@@ -14,7 +14,7 @@ app.use(express.json());
 
 const router = require("./apis/routes.js");
 app.use("/api", router);
-app.use("/", swaggerUi.serve, swaggerUi.setup(swaggerDocument));
+app.use("/docs", swaggerUi.serve, swaggerUi.setup(swaggerDocument));
 
 console.log("====================================");
 console.log("You Made", EndPointCounter(router).length, "APIS Mr.Exotic :D");

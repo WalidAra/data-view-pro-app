@@ -8,4 +8,8 @@ export type Fetch = {
   token?: string;
 };
 
-export type FetchResponse = {};
+export type FetchResponse = {
+  status: boolean;
+  message: string;
+  data: any;
+};

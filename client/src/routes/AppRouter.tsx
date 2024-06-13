@@ -5,6 +5,8 @@ import Database from "@/components/features/home/database/Database";
 import Table from "@/components/features/home/table/Table";
 import AuthLayout from "@/components/layouts/AuthLayout";
 import HomeLayout from "@/components/layouts/HomeLayout";
+import DontBeShame from "@/components/utils/DontBeShame";
+import PrivateRoute from "@/components/utils/PrivateRoute";
 import {
   BrowserRouter as Router,
   Routes,
@@ -19,9 +21,11 @@ const AppRouter = () => {
         <Route
           path="/"
           element={
-            <HomeLayout>
-              <Outlet />
-            </HomeLayout>
+            <PrivateRoute>
+              <HomeLayout>
+                <Outlet />
+              </HomeLayout>
+            </PrivateRoute>
           }
         >
           <Route path="dashboard" element={<Dashboard />} />
@@ -32,9 +36,11 @@ const AppRouter = () => {
         <Route
           path="/auth"
           element={
-            <AuthLayout>
-              <Outlet />
-            </AuthLayout>
+            <DontBeShame>
+              <AuthLayout>
+                <Outlet />
+              </AuthLayout>
+            </DontBeShame>
           }
         >
           <Route path="login" element={<LoginForm />} />

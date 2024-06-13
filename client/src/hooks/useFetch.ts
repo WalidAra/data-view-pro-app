@@ -12,8 +12,8 @@ export const useFetch = async ({
   body,
   token,
 }: Fetch) => {
-  const header = process.env.TOKEN_HEADER as string; // set your own header
-  const BASE_URL = process.env.BASE_URL as string; // set your own base url (backend server url)
+  const header = import.meta.env.VITE_TOKEN_HEADER as string; // set your own header
+  const BASE_URL = import.meta.env.VITE_BASE_URL as string; // set your own base url (backend server url)
 
   try {
     const axiosConfig: AxiosRequestConfig = {

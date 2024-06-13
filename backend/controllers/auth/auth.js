@@ -10,6 +10,7 @@ const Auth = {
   Login: async (req, res) => {
     const { email, password, recall } = req.body;
     try {
+      
       const isUser = await prisma.user.findUnique({
         where: {
           email: email,
@@ -29,7 +30,7 @@ const Auth = {
       const isMatch = await bcrypt.compare(password, isUser.password);
 
       if (!isMatch) {
-        return res.status(401).json({
+        return res.status(201).json({
           message: "Wrong credentials",
           status: false,
           data: {

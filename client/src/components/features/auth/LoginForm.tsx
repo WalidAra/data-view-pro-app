@@ -1,3 +1,6 @@
+/* eslint-disable no-empty */
+/* eslint-disable react-hooks/rules-of-hooks */
+/* eslint-disable @typescript-eslint/no-unused-vars */
 import { Button } from "@/components/cli/ui/button";
 import {
   Card,
@@ -10,55 +13,123 @@ import { Input } from "@/components/cli/ui/input";
 import { Label } from "@/components/cli/ui/label";
 import { Link } from "react-router-dom";
 import { AiFillGithub } from "react-icons/ai";
+import { z } from "zod";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { useForm } from "react-hook-form";
+import {
+  Form,
+  FormControl,
+  FormField,
+  FormItem,
+  FormLabel,
+  FormMessage,
+} from "@/components/cli/ui/form";
+import { useFetch } from "@/hooks/useFetch";
+import { useAuth } from "@/hooks/useAuth";
+
+const formSchema = z.object({
+  email: z.string().min(14),
+  password: z.string().min(8).max(50),
+});
 
 export function LoginForm() {
+  const { setToken } = useAuth();
+
+  const form = useForm<z.infer<typeof formSchema>>({
+    resolver: zodResolver(formSchema),
+    defaultValues: {
+      email: "",
+      password: "",
+    },
+  });
+
+  async function onSubmit(values: z.infer<typeof formSchema>) {
+    const res = await useFetch({
+      method: "POST",
+      body: values,
+      endPoint: "/auth/login",
+      TokenInclude: false,
+    });
+
+    if (res.status) {
+      localStorage.setItem("dvp-auth", res.data.token);
+      setToken(res.data.token);
+    }
+  }
+
   return (
-    <Card className="mx-auto max-w-sm">
+    <Card className="sm:w-[400px] w-sm">
       <CardHeader>
         <CardTitle className="text-2xl">Login</CardTitle>
         <CardDescription>
           Enter your email below to login to your account
         </CardDescription>
       </CardHeader>
-      <CardContent>
-        <div className="grid gap-4">
+      <CardContent className="gap-4 flex flex-col">
+        <Form {...form}>
+          <form onSubmit={form.handleSubmit(onSubmit)} className="grid gap-4">
+            <FormField
+              control={form.control}
+              name="email"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Email</FormLabel>
+                  <FormControl>
+                    <Input
+                      type="email"
+                      placeholder="m@example.com"
+                      {...field}
+                    />
+                  </FormControl>
 
-          <div className="grid gap-2">
-            <Label htmlFor="email">Email</Label>
-            <Input
-              id="email"
-              type="email"
-              placeholder="m@example.com"
-              required
+                  <FormMessage />
+                </FormItem>
+              )}
             />
-          </div>
-          <div className="grid gap-2">
-            <div className="flex items-center">
-              <Label htmlFor="password">Password</Label>
-              <Link to="#" className="ml-auto inline-block text-sm underline">
-                Forgot your password?
-              </Link>
-            </div>
-            <Input
-              placeholder="Enter your password"
-              id="password"
-              type="password"
-              required
+            <FormField
+              control={form.control}
+              name="password"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel className="flex items-center">
+                    <Label htmlFor="password">Password</Label>
+                    <Link
+                      to="#"
+                      className="ml-auto inline-block text-sm underline"
+                    >
+                      Forgot your password?
+                    </Link>
+                  </FormLabel>
+                  <FormControl>
+                    <Input
+                      type="password"
+                      placeholder="Enter your password"
+                      {...field}
+                    />
+                  </FormControl>
+
+                  <FormMessage />
+                </FormItem>
+              )}
             />
-          </div>
-          <Button type="submit" className="w-full">
-            Login
-          </Button>
+            <Button type="submit" className="w-full">
+              Login
+            </Button>
+          </form>
+        </Form>
+
+        <div className="flex flex-col ">
           <Button variant="outline" className="w-full flex items-center gap-2">
             <AiFillGithub className="size-6" />
             Login with Github
           </Button>
-        </div>
-        <div className="mt-4 text-center text-sm">
-          Don&apos;t have an account
-          <Link to="/auth/register" className="underline ml-1">
-            Sign up
-          </Link>
+
+          <div className="mt-4 text-center text-sm">
+            Don&apos;t have an account
+            <Link to="/auth/register" className="underline ml-1">
+              Sign up
+            </Link>
+          </div>
         </div>
       </CardContent>
     </Card>
