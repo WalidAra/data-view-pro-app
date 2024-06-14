@@ -1,3 +1,4 @@
+/* eslint-disable no-empty */
 /* eslint-disable @typescript-eslint/no-unused-vars */
 /* eslint-disable react-hooks/exhaustive-deps */
 /* eslint-disable react-hooks/rules-of-hooks */
@@ -30,6 +31,10 @@ const ProfileProvider = ({ children }: { children: React.ReactNode }) => {
             user: res.data as User,
           })
         );
+      } else if (res.status === false) {
+        console.log("====================================");
+        console.log("token has expired ");
+        console.log("====================================");
       }
     };
     if (token && user.id) {

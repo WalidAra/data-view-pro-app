@@ -4,6 +4,10 @@ import { Navigate, useLocation } from "react-router-dom";
 
 const Middleware = ({ children }: { children: React.ReactNode }) => {
   const location = useLocation();
+
+  console.log("====================================");
+  console.log(location.pathname);
+  console.log("====================================");
   const { token } = useAuth();
 
   if (!token) {
@@ -16,16 +20,17 @@ const Middleware = ({ children }: { children: React.ReactNode }) => {
     ) {
       return <Navigate to={"/auth/login"} />;
     }
-  } else if(token){
+  } else if (token) {
     if (
       location.pathname === "/auth/login" ||
-      location.pathname === "/auth/register" || location.pathname === '/'
+      location.pathname === "/auth/register" ||
+      location.pathname === "/"
     ) {
       return <Navigate to={"/dashboard"} />;
+    } else {
+      return children;
     }
   }
-
-  return children;
 };
 
 export default Middleware;
