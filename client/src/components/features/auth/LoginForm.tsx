@@ -16,9 +16,11 @@ import { AiFillGithub } from "react-icons/ai";
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
+import { Loader2 } from "lucide-react";
 import {
   Form,
   FormControl,
+  FormDescription,
   FormField,
   FormItem,
   FormLabel,
@@ -26,6 +28,8 @@ import {
 } from "@/components/cli/ui/form";
 import { useFetch } from "@/hooks/useFetch";
 import { useAuth } from "@/hooks/useAuth";
+import { useState } from "react";
+import { Checkbox } from "@/components/cli/ui/checkbox";
 
 const formSchema = z.object({
   email: z.string().min(14),
@@ -33,7 +37,9 @@ const formSchema = z.object({
 });
 
 export function LoginForm() {
+  const [isLoading, setIsLoading] = useState<boolean>(false);
   const { setToken } = useAuth();
+  const [recall, setRecall] = useState(false);
 
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
@@ -44,12 +50,19 @@ export function LoginForm() {
   });
 
   async function onSubmit(values: z.infer<typeof formSchema>) {
+    setIsLoading(true);
     const res = await useFetch({
       method: "POST",
-      body: values,
+      body: { email: values.email, password: values.password, recall },
       endPoint: "/auth/login",
       TokenInclude: false,
     });
+
+    setIsLoading(false);
+
+    console.log("====================================");
+    console.log(res);
+    console.log("====================================");
 
     if (res.status) {
       localStorage.setItem("dvp-auth", res.data.token);
@@ -107,12 +120,21 @@ export function LoginForm() {
                       {...field}
                     />
                   </FormControl>
-
+                  <FormDescription className="flex items-center gap-2">
+                    <Checkbox
+                      checked={recall}
+                      onCheckedChange={() => {
+                        setRecall((prev) => !prev);
+                      }}
+                    />
+                    Remember me for 30 days
+                  </FormDescription>
                   <FormMessage />
                 </FormItem>
               )}
             />
-            <Button type="submit" className="w-full">
+            <Button disabled={isLoading} type="submit" className="w-full">
+              {isLoading && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
               Login
             </Button>
           </form>

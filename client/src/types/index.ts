@@ -1,5 +1,6 @@
 /* eslint-disable @typescript-eslint/ban-types */
 /* eslint-disable @typescript-eslint/no-explicit-any */
+
 export type Fetch = {
   endPoint?: string;
   method: "GET" | "POST" | "PUT" | "DELETE";
@@ -12,4 +13,17 @@ export type FetchResponse = {
   status: boolean;
   message: string;
   data: any;
+};
+
+export type Provider = {
+  id: string;
+  name: string;
+};
+
+export type User = {
+  id: string;
+  name: string;
+  email: string;
+  image: string;
+  createdAt: string;
 };

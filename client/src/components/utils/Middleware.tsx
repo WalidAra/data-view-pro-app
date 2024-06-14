@@ -10,15 +10,16 @@ const Middleware = ({ children }: { children: React.ReactNode }) => {
     if (
       !(
         location.pathname === "/auth/login" ||
-        location.pathname === "/auth/register"
+        location.pathname === "/auth/register" ||
+        location.pathname === "/"
       )
     ) {
       return <Navigate to={"/auth/login"} />;
     }
-  } else {
+  } else if(token){
     if (
       location.pathname === "/auth/login" ||
-      location.pathname === "/auth/register"
+      location.pathname === "/auth/register" || location.pathname === '/'
     ) {
       return <Navigate to={"/dashboard"} />;
     }

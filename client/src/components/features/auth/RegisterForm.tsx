@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/rules-of-hooks */
 /* eslint-disable @typescript-eslint/no-unused-vars */
 import { Button } from "@/components/cli/ui/button";
 import {
@@ -24,6 +25,11 @@ import {
 } from "@/components/cli/ui/form";
 
 import { z } from "zod";
+import { useState } from "react";
+import { Checkbox } from "@/components/cli/ui/checkbox";
+import { useFetch } from "@/hooks/useFetch";
+import { useAuth } from "@/hooks/useAuth";
+import { Loader2 } from "lucide-react";
 
 const formSchema = z.object({
   username: z.string().min(2).max(50),
@@ -32,6 +38,9 @@ const formSchema = z.object({
 });
 
 export function RegisterForm() {
+  const { setToken } = useAuth();
+  const [isLoading, setIsLoading] = useState<boolean>(false);
+  const [recall, setRecall] = useState(false);
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
@@ -41,8 +50,21 @@ export function RegisterForm() {
     },
   });
 
-  function onSubmit(values: z.infer<typeof formSchema>) {
-    console.log(values);
+  async function onSubmit(values: z.infer<typeof formSchema>) {
+    setIsLoading(true);
+    const res = await useFetch({
+      method: "POST",
+      body: { ...values, recall },
+      endPoint: "/auth/register",
+      TokenInclude: false,
+    });
+
+    setIsLoading(true);
+
+    if (res.status) {
+      localStorage.setItem("dvp-auth", res.data.token);
+      setToken(res.data.token);
+    }
   }
 
   return (
@@ -63,7 +85,7 @@ export function RegisterForm() {
                 <FormItem>
                   <FormLabel>Username</FormLabel>
                   <FormControl>
-                    <Input placeholder="Enter your" {...field} />
+                    <Input type="text" placeholder="Enter your" {...field} />
                   </FormControl>
                   <FormDescription>
                     This is your public display name.
@@ -111,12 +133,21 @@ export function RegisterForm() {
                       {...field}
                     />
                   </FormControl>
-
+                  <FormDescription className="flex items-center gap-2">
+                    <Checkbox
+                      checked={recall}
+                      onCheckedChange={() => {
+                        setRecall((prev) => !prev);
+                      }}
+                    />
+                    Remember me for 30 days
+                  </FormDescription>
                   <FormMessage />
                 </FormItem>
               )}
             />
-            <Button type="submit" className="w-full">
+            <Button disabled={isLoading} type="submit" className="w-full">
+              {isLoading && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
               Register
             </Button>
           </form>

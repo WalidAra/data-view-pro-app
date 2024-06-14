@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/no-unused-vars */
 import { LoginForm } from "@/components/features/auth/LoginForm";
 import { RegisterForm } from "@/components/features/auth/RegisterForm";
 import Dashboard from "@/components/features/home/dashboard/Dashboard";

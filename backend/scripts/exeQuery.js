@@ -15,4 +15,4 @@ const exeQuery = async () => {
   }
 };
 
-module.exports = exeQuery;
+exeQuery();

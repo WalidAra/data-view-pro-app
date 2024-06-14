@@ -1,5 +1,5 @@
 -- CreateEnum
-CREATE TYPE "DatabaseType" AS ENUM ('SQL', 'NoSQL');
+CREATE TYPE "DbType" AS ENUM ('SQL', 'NoSQL');
 
 -- CreateTable
 CREATE TABLE "Provider" (
@@ -12,13 +12,11 @@ CREATE TABLE "Provider" (
 -- CreateTable
 CREATE TABLE "User" (
     "id" TEXT NOT NULL,
-    "username" TEXT NOT NULL,
+    "name" TEXT NOT NULL,
+    "image" TEXT NOT NULL,
     "email" TEXT NOT NULL,
     "password" TEXT NOT NULL,
-    "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
-    "lastLoginAt" TIMESTAMP(3) NOT NULL,
     "providerId" TEXT NOT NULL,
-    "image" TEXT,
 
     CONSTRAINT "User_pkey" PRIMARY KEY ("id")
 );
@@ -26,12 +24,13 @@ CREATE TABLE "User" (
 -- CreateTable
 CREATE TABLE "Database" (
     "id" TEXT NOT NULL,
-    "uri" TEXT NOT NULL,
     "userId" TEXT NOT NULL,
-    "type" "DatabaseType" NOT NULL,
+    "title" TEXT NOT NULL,
+    "type" "DbType" NOT NULL,
     "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    "description" TEXT NOT NULL,
     "name" TEXT NOT NULL,
-    "db" TEXT NOT NULL,
+    "uri" TEXT NOT NULL,
 
     CONSTRAINT "Database_pkey" PRIMARY KEY ("id")
 );

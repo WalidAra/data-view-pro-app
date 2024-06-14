@@ -7,10 +7,34 @@ const saltOrRounds = 10;
 require("dotenv").config();
 
 const Auth = {
+  Profile: async (req, res) => {
+    const { id } = req.user;
+
+    try {
+      const userEntity = await prisma.user.findUnique({
+        where: {
+          id,
+        },
+      });
+
+      const user = destructUser(userEntity);
+
+      return res.status(200).json({
+        message: "User Found",
+        status: true,
+        data: {
+          ...user,
+        },
+      });
+    } catch (error) {
+      console.error(error.message);
+      return res.status(500).json(Error500);
+    }
+  },
+
   Login: async (req, res) => {
     const { email, password, recall } = req.body;
     try {
-      
       const isUser = await prisma.user.findUnique({
         where: {
           email: email,
@@ -18,7 +42,7 @@ const Auth = {
       });
 
       if (!isUser) {
-        return res.status(404).json({
+        return res.status(203).json({
           message: "User Not Found",
           status: false,
           data: {
@@ -94,9 +118,9 @@ const Auth = {
       const newUser = await prisma.user.create({
         data: {
           email,
-          password: hashedPW,
-          username,
+          name: username,
           image: "",
+          password: hashedPW,
           providerId: directProvider.id,
         },
       });
