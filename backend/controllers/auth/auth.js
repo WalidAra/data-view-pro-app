@@ -8,7 +8,7 @@ require("dotenv").config();
 
 const Auth = {
   Profile: async (req, res) => {
-    const { id } = req.user;
+    const { id } = req.user.id;
 
     try {
       const userEntity = await prisma.user.findUnique({
@@ -20,7 +20,7 @@ const Auth = {
       const user = destructUser(userEntity);
 
       return res.status(200).json({
-        message: "User Found",
+        message: "Got user profile successfully",
         status: true,
         data: {
           ...user,

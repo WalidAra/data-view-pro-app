@@ -3,9 +3,9 @@ import AppRouter from "./routes/AppRouter";
 
 function App() {
   return (
-    <ProfileProvider>
-      <AppRouter />
-    </ProfileProvider>
+    <AppRouter>
+      <ProfileProvider />
+    </AppRouter>
   );
 }
 

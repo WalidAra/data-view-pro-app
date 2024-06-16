@@ -21,8 +21,7 @@ const AuthProvider = ({ children }: { children: React.ReactNode }) => {
     if (storedToken) {
       setToken(storedToken);
     }
-  }, []); 
-  
+  }, []);
 
   return <Auth.Provider value={{ token, setToken }}>{children}</Auth.Provider>;
 };

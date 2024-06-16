@@ -32,7 +32,7 @@ const DBCard = ({
 }: DBCardProps) => {
   const IconComponent = dbs[name];
   return (
-    <Card className="sm:w-80 w-full p-4 flex flex-col justify-between gap-2 shadow-none">
+    <Card className="sm:w-80 w-full p-4 flex flex-col justify-between gap-2 ">
       <CardHeader className="p-0 flex flex-col gap-1.5">
         <CardTitle>{title}</CardTitle>
         <CardDescription className="flex items-center gap-2">

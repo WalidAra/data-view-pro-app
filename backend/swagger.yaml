@@ -231,3 +231,80 @@ paths:
                   data:
                     type: object
                     nullable: true
+
+  /api/private/auth/profile:
+    get:
+      summary: Get user profile
+      tags:
+        - Auth
+      security:
+        - dvpAuth: []
+      responses:
+        '200':
+          description: Got user profile successfully
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: "Got user profile successfully"
+                  status:
+                    type: boolean
+                    example: true
+                  data:
+                    type: object
+                    properties:
+                      id:
+                        type: string
+                        example: "uuid123"
+                      username:
+                        type: string
+                        example: "johndoe"
+                      email:
+                        type: string
+                        example: "johndoe@example.com"
+                      createdAt:
+                        type: string
+                        format: date-time
+                        example: "2024-06-07T12:00:00Z"
+                      image:
+                        type: string
+                        example: "your_image_url_here"
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: "Unauthorized"
+                  status:
+                    type: boolean
+                    example: false
+        '500':
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: "Internal Server Error"
+                  status:
+                    type: boolean
+                    example: false
+                  data:
+                    type: object
+                    nullable: true
+
+components:
+  securitySchemes:
+    dvpAuth:
+      type: apiKey
+      in: header
+      name: dvp-auth

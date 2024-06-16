@@ -60,10 +60,6 @@ export function LoginForm() {
 
     setIsLoading(false);
 
-    console.log("====================================");
-    console.log(res);
-    console.log("====================================");
-
     if (res.status) {
       localStorage.setItem("dvp-auth", res.data.token);
       setToken(res.data.token);
