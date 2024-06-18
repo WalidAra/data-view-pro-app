@@ -15,14 +15,22 @@ import {
 import { RootState } from "@/features/state management/store/store";
 import { defaultPic } from "@/utils";
 import { useSelector } from "react-redux";
+import { LogoutItem } from "../molecules/LogoutItem";
+import { Link } from "react-router-dom";
+import { SiMicrosoftsqlserver } from "react-icons/si";
 
 const NavBar = () => {
   const session = useSelector((state: RootState) => state.user);
 
   return (
     <div>
-      <header className="sticky w-full top-0 flex h-16 items-center justify-between gap-4 border-b bg-background px-4 md:px-6">
-        <h1>Logo</h1>
+      <header className="sticky w-full top-0 flex h-16 items-center justify-between gap-4 border-b bg-background px-4 md:px-7">
+        <Link
+          to="/dashboard"
+          className="flex items-center gap-2 text-lg font-semibold md:text-base"
+        >
+          <SiMicrosoftsqlserver className="size-8" />
+        </Link>
 
         {session.isUser && (
           <DropdownMenu>
@@ -30,7 +38,7 @@ const NavBar = () => {
               <Avatar>
                 <AvatarImage
                   src={session.user.image ? session.user.image : defaultPic}
-                  alt="@shadcn"
+                  alt={session.user.name}
                 />
                 <AvatarFallback>CN</AvatarFallback>
               </Avatar>
@@ -38,10 +46,10 @@ const NavBar = () => {
             <DropdownMenuContent align="end">
               <DropdownMenuLabel>My Account</DropdownMenuLabel>
               <DropdownMenuSeparator />
-              <DropdownMenuItem className="font-medium" >Settings</DropdownMenuItem>
-              <DropdownMenuItem className="font-medium" >Support</DropdownMenuItem>
+              <DropdownMenuItem>Settings</DropdownMenuItem>
+              <DropdownMenuItem>Support</DropdownMenuItem>
               <DropdownMenuSeparator />
-              <DropdownMenuItem className="text-red-500 font-medium" >Logout</DropdownMenuItem>
+              <LogoutItem />
             </DropdownMenuContent>
           </DropdownMenu>
         )}

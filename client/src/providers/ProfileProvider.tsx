@@ -10,7 +10,7 @@ import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { toast } from "sonner";
 
-const ProfileProvider = () => {
+const ProfileProvider = ({ children }: { children: React.ReactNode }) => {
   const { token } = useAuth();
   const dispatch = useDispatch();
   const user = useSelector((state: RootState) => state.user).user;
@@ -43,7 +43,7 @@ const ProfileProvider = () => {
 
         setTimeout(() => {
           window.location.reload();
-        }, 1000);
+        }, 1500);
       }
     };
 
@@ -52,7 +52,7 @@ const ProfileProvider = () => {
     }
   }, []);
 
-  return <></>;
+  return <> {children} </>;
 };
 
 export default ProfileProvider;

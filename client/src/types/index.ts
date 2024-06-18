@@ -27,3 +27,26 @@ export type User = {
   image: string;
   createdAt: string;
 };
+
+export type Database = {
+  id: string;
+  createdAt: string;
+  description: string;
+  name: string;
+  size: string;
+  tableCount: string;
+  title: string;
+  type: string;
+};
+
+export type DatabaseInfo = {
+  createdAt: string;
+  description: string;
+  id: string;
+  name: string;
+  size: string;
+  tableCount: string;
+  tables: string[];
+  title: string;
+  type: string;
+};

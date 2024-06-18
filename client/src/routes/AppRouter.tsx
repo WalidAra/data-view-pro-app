@@ -5,6 +5,7 @@ import Dashboard from "@/components/features/home/dashboard/Dashboard";
 import Database from "@/components/features/home/database/Database";
 import Table from "@/components/features/home/table/Table";
 import AuthLayout from "@/components/layouts/AuthLayout";
+import DBLayout from "@/components/layouts/DBLayout";
 import HomeLayout from "@/components/layouts/HomeLayout";
 import Middleware from "@/components/utils/Middleware";
 
@@ -15,11 +16,10 @@ import {
   Outlet,
 } from "react-router-dom";
 
-const AppRouter = ({ children }:{ children: React.ReactNode}) => {
+const AppRouter = () => {
   return (
     <Router>
       <Middleware>
-        {children}
         <Routes>
           <Route
             path="/"
@@ -30,8 +30,10 @@ const AppRouter = ({ children }:{ children: React.ReactNode}) => {
             }
           >
             <Route path="dashboard" element={<Dashboard />} />
-            <Route path="dashboard/:databaseId" element={<Database />} />
-            <Route path="dashboard/:databaseId/tableId" element={<Table />} />
+            <Route path="dashboard/:databaseId" element={<DBLayout />}>
+              <Route index element={<Database />} />
+              <Route path=":tableName" element={<Table />} />
+            </Route>
           </Route>
 
           <Route

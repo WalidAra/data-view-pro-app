@@ -1,16 +1,16 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
 import Column from "./Column";
 
-const Columns = () => {
+type Props = {
+  cols:string[]
+}
+
+const Columns = ({cols}: Props) => {
   return (
     <div className="w-full flex ">
-      <Column col="ID" isId />
-      <Column col="username" isId={false} />
-      <Column col="email" isId={false} />
-      <Column col="password" isId={false} />
-      <Column col="first name" isId={false} />
-      <Column col="last name" isId={false} />
-      <Column col="bio" isId={false} />
-      <Column col="isBanned" isId={false} />
+      {cols.map((c) => (
+        <Column col={c} key={c} isId={false} />
+      ))}
     </div>
   );
 };
